@@ -41,15 +41,26 @@ def checklose(board):
 def pushUP():
     UserInput = raw_input("Enter:")
     if UserInput == "u":
+                
         for i in range(3,0,-1):
             for j in range(4):
+                #check if 2 numbers are the same, if yes, add them together
                 if board[i][j] == board[i-1][j]:
                     board[i-1][j] = str(int(board[i][j])+int(board[i-1][j]))
                     board[i][j] = "0"
+                #check if the slot above is empty, if so, push up the number below
                 elif board[i-1][j] == "0":
                     board[i-1][j] = board[i][j]
                     board[i][j] = "0"
-
+        #make sure every number is correctly pushed up
+        #showboard(board)
+        for i in range(3):
+            for j in range(4):             
+                if board[i][j] == "0":
+                    board[i][j] = board[i+1][j]
+                    board[i+1][j] = "0"
+                    
+                
                 
     showboard(board)
 
