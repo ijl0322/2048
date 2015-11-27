@@ -1,7 +1,7 @@
 import random
 #initialize board
 
-
+random.seed(2)
 board = [["0"]*4,["0"]*4,["0"]*4,["0"]*4]
 
     
@@ -49,9 +49,10 @@ def pushUP():
                     board[i-1][j] = str(int(board[i][j])+int(board[i-1][j]))
                     board[i][j] = "0"
                 #check if the slot above is empty, if so, push up the number below
-                elif board[i-1][j] == "0":
+                if board[i-1][j] == "0":
                     board[i-1][j] = board[i][j]
                     board[i][j] = "0"
+                
         #make sure every number is correctly pushed up
         #showboard(board)
         for i in range(3):
@@ -59,7 +60,9 @@ def pushUP():
                 if board[i][j] == "0":
                     board[i][j] = board[i+1][j]
                     board[i+1][j] = "0"
-                    
+                    if board[i-1][j] == "0":
+                        board[i-1][j] = board[i][j]
+                        board[i][j] = "0"
                 
                 
     showboard(board)
