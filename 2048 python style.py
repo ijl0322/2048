@@ -1,7 +1,6 @@
 import random
 #initialize board
 
-random.seed(2)
 board = [["0"]*4,["0"]*4,["0"]*4,["0"]*4]
 
     
@@ -32,8 +31,6 @@ def checklose(board):
                 totalNum += 1
     return totalNum < 16 
 
-
-
 def pushUp():
                 
     for i in range(3,0,-1):
@@ -49,7 +46,8 @@ def pushUp():
             
     #make sure every number is correctly pushed up
     for i in range(3):
-        for j in range(4):             
+        for j in range(4):         
+
             if board[i][j] == "0" and board[i-1][j] == "0":
                 board[i][j] = board[i+1][j]
                 board[i+1][j] = "0"
@@ -58,28 +56,29 @@ def pushUp():
             elif board[i][j] == "0":
                 board[i][j] = board[i+1][j]
                 board[i+1][j] = "0"
-        
+            if board[i][j] == board[i+1][j]:
+                board[i][j] = str(int(board[i][j])+int(board[i+1][j]))
+                board[i+1][j] = "0"
 
 def pushDown(): #Need debugging
                 
     #make sure every number is correctly pushed up
     for i in range(3):
         for j in range(4):
-            print "This is " , i, j
+
             #check if 2 numbers are the same, if yes, add them together
             if board[i][j] == board[i+1][j]:
                 board[i+1][j] = str(int(board[i][j])+int(board[i+1][j]))
                 board[i][j] = "0"
-                showboard(board)
+
             #check if the slot above is empty, if so, push up the number below
             if board[i+1][j] == "0":
                 board[i+1][j] = board[i][j]
                 board[i][j] = "0"
                 
-                showboard(board)
     for i in range(2,0,-1):
         for j in range(4):         
-            #print "This is", i, j    
+
             if board[i][j] == "0" and board[i+1][j] == "0":
                 board[i][j] = board[i-1][j]
                 board[i-1][j] = "0"
@@ -89,8 +88,10 @@ def pushDown(): #Need debugging
             elif board[i][j] == "0":
                 board[i][j] = board[i-1][j]
                 board[i-1][j] = "0"
-                #showboard(board)
-
+                #showboard(board)        
+            if board[i][j] == board[i+1][j]:
+                board[i+1][j] = str(int(board[i][j])+int(board[i+1][j]))
+                board[i][j] = "0"
 def main():
     
     print "Hi, welcome to 2048 game!"
@@ -114,3 +115,9 @@ for i in range(10):
     addNewNum()
   
 main()
+
+
+
+
+
+
