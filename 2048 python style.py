@@ -107,7 +107,7 @@ def pushRight():
     #make sure every number is correctly pushed up
     for i in range(3):
         for j in range(4):             
-            if board[j][i] == "0" and board[j][i] == "0":
+            if board[j][i] == "0" and board[j][i-1] == "0":
                 board[j][i] = board[j][i+1]
                 board[j][i+1] = "0"
                 board[j][i-1] = board[j][i]
