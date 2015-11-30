@@ -88,10 +88,43 @@ def pushDown(): #Need debugging
             elif board[i][j] == "0":
                 board[i][j] = board[i-1][j]
                 board[i-1][j] = "0"
+<<<<<<< HEAD
                 #showboard(board)        
             if board[i][j] == board[i+1][j]:
                 board[i+1][j] = str(int(board[i][j])+int(board[i+1][j]))
                 board[i][j] = "0"
+=======
+                #showboard(board)
+
+def pushRight():
+                
+    for i in range(3,0,-1):
+        for j in range(4):
+            #check if 2 numbers are the same, if yes, add them together
+            if board[j][i] == board[j][i-1]:
+                board[j][i-1] = str(int(board[j][i])+int(board[j][i-1]))
+                board[j][i] = "0"
+            #check if the slot above is empty, if so, push up the number below
+            if board[j][i-1] == "0":
+                board[j][i-1] = board[j][i]
+                board[j][i] = "0"
+            
+    #make sure every number is correctly pushed up
+    for i in range(3):
+        for j in range(4):             
+            if board[j][i] == "0" and board[j][i] == "0":
+                board[j][i] = board[j][i+1]
+                board[j][i+1] = "0"
+                board[j][i-1] = board[j][i]
+                board[j][i] = "0"
+            elif board[j][i] == "0":
+                board[j][i] = board[j][i+1]
+                board[j][i+1] = "0"
+        
+
+
+
+>>>>>>> master
 def main():
     
     print "Hi, welcome to 2048 game!"
@@ -107,6 +140,8 @@ def main():
         pushUp()
     elif UserInput == "d":    
         pushDown()
+    elif UserInput == "r":
+        pushRight()
     showboard(board)
   
 
