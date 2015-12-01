@@ -7,7 +7,16 @@ board = [["0"]*4,["0"]*4,["0"]*4,["0"]*4]
 def showboard(board):
     """ Takes in a list (board), and prints out the board """
     for line in board:
-        print "   ".join(line)
+        for item in line:
+            if int(item)/1000 > 0:
+                print " ", item,
+            elif int(item)/100 > 0:
+                print "  ", item,
+            elif int(item)/10 > 0:
+                print "   ", item,
+            else:
+                print "    ", item,
+        print " "
         print " "
 
 def addNewNum():
@@ -151,22 +160,28 @@ def main():
     print "Enter l to move all numbers tp the left"
     print "Enter r to move all numbers to the right"
     print " "
-    
-    showboard(board)
-    UserInput = raw_input("Enter u, d, l or r:")
-    if UserInput == "u":    
-        pushUp()
-    elif UserInput == "d":    
-        pushDown()
-    elif UserInput == "r":
-        pushRight()
-    elif UserInput == "l":
-        pushLeft()
-    showboard(board)
+    addNewNum() 
+
+    if not checklose(board):
+        print "Sorry, Game over"
+                        
+    while checklose(board):
+
+        addNewNum()              
+        showboard(board) 
+        UserInput = raw_input("Enter u, d, l or r:")
+        if UserInput == "u":    
+            pushUp()
+        elif UserInput == "d":    
+            pushDown()
+        elif UserInput == "r":
+            pushRight()
+        elif UserInput == "l":
+            pushLeft()
+
   
 
 
-for i in range(10):
-    addNewNum()
+
   
 main()
