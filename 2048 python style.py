@@ -88,12 +88,12 @@ def pushDown(): #Need debugging
             elif board[i][j] == "0":
                 board[i][j] = board[i-1][j]
                 board[i-1][j] = "0"
-<<<<<<< HEAD
+
                 #showboard(board)        
             if board[i][j] == board[i+1][j]:
                 board[i+1][j] = str(int(board[i][j])+int(board[i+1][j]))
                 board[i][j] = "0"
-=======
+
                 #showboard(board)
 
 def pushRight():
@@ -124,7 +124,7 @@ def pushRight():
 
 
 
->>>>>>> master
+
 def main():
     
     print "Hi, welcome to 2048 game!"
