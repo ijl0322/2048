@@ -18,8 +18,8 @@ def showboard(board):
                 print "   ", item,
             else:
                 print "    ", item,
-        print " "
-        print " "
+        print "\n\n"
+
 
 def addNewNum():
     """Generates a 2 or 4, and set at a random location on board\
@@ -41,7 +41,16 @@ def checklose(board):
             if num != "0":
                 totalNum += 1
     return totalNum < 16 
-
+    
+def checkwin(board):
+    flag = False
+    for line in board:
+        for num in line:
+            if num == "2048":
+                print "Congratulations! You win!!!!" 
+                flag = True
+    return flag
+                
 def push(i_list, j_list, i_direction, j_direction):
     for i in i_list:
         for j in j_list:
@@ -58,16 +67,16 @@ def push(i_list, j_list, i_direction, j_direction):
 
 def pushDirection(UserInput):
     if UserInput == "u":
-        i_list, j_list = range(3,0,-1), range(4)
+        i_list, j_list = range(1,4), range(4)
         i_direction, j_direction = -1, 0
     elif UserInput == "d":
-        i_list, j_list = range(3), range(4)
+        i_list, j_list = range(2,-1,-1), range(4)
         i_direction, j_direction = 1, 0
     elif UserInput == "l":
-        i_list, j_list = range(4), range(3,0,-1)
+        i_list, j_list = range(4), range(1,4)
         i_direction, j_direction = 0, -1
     elif UserInput == "r":
-        i_list, j_list = range(4), range(3)
+        i_list, j_list = range(4), range(2,-1,-1)
         i_direction, j_direction = 0, 1
        
     for i in range(4): 
@@ -88,12 +97,17 @@ def main():
         addNewNum()              
         showboard(board) 
         UserInput = raw_input("Enter u, d, l or r:")
+        print "\n"
         if UserInput in "udlr":
             pushDirection(UserInput)
         else:
             print "Invalid input, please try again."  
-        if not checklose(board):
+        
+        if checkwin(board):
+            break
+        elif not checklose(board):
             print "Sorry, Game over"
+        
 
 if __name__=='__main__':
     main()
