@@ -8,7 +8,9 @@ def showboard(board):
     """ Takes in a list (board), and prints out the board """
     for line in board:
         for item in line:
-            if int(item)/1000 > 0:
+            if item == "0":
+                print "     -",
+            elif int(item)/1000 > 0:
                 print " ", item,
             elif int(item)/100 > 0:
                 print "  ", item,
@@ -40,125 +42,36 @@ def checklose(board):
                 totalNum += 1
     return totalNum < 16 
 
-
-def pushLeft():
+def push(i_list, j_list, i_direction, j_direction):
+    for i in i_list:
+        for j in j_list:
                 
-    for i in range(3,0,-1):
-        for j in range(4):
-            
-            #check if 2 numbers are the same, if yes, add them together
-            if board[j][i] == board[j][i-1]:
-                board[j][i-1] = str(int(board[j][i])+int(board[j][i-1]))
-                board[j][i] = "0"
-                
+        #check if 2 numbers are the same, if yes, add them together
+            if board[i][j] == board[i + i_direction][j + j_direction]:
+                board[i+ i_direction][j + j_direction] = str(int(board[i][j])+int(board[i+ i_direction][j+j_direction]))
+                board[i][j] = "0"
+                        
             #check if the slot above is empty, if so, push up the number below
-            if board[j][i-1] == "0":
-                board[j][i-1] = board[j][i]
-                board[j][i] = "0"
-            
-    #make sure every number is correctly pushed up
-    for i in range(3):
-        for j in range(4):             
-            
-            if board[j][i] == "0" and board[j][i-1] == "0":
-                board[j][i] = board[j][i+1]
-                board[j][i+1] = "0"
-                board[j][i-1] = board[j][i]
-                board[j][i] = "0"
-                
-            elif board[j][i] == "0":
-                board[j][i] = board[j][i+1]
-                board[j][i+1] = "0"
-        
-def pushDown(): 
-                
-    #make sure every number is correctly pushed up
-    for i in range(3):
-        for j in range(4):
-
-            #check if 2 numbers are the same, if yes, add them together
-            if board[i][j] == board[i+1][j]:
-                board[i+1][j] = str(int(board[i][j])+int(board[i+1][j]))
+            if board[i + i_direction][j + j_direction] == "0":
+                board[i + i_direction][j + j_direction] = board[i][j]
                 board[i][j] = "0"
 
-            #check if the slot above is empty, if so, push up the number below
-            if board[i+1][j] == "0":
-                board[i+1][j] = board[i][j]
-                board[i][j] = "0"
-                
-    for i in range(2,0,-1):
-        for j in range(4):         
- 
-            if board[i][j] == "0" and board[i+1][j] == "0":
-                board[i][j] = board[i-1][j]
-                board[i-1][j] = "0"
-                board[i+1][j] = board[i][j]
-                board[i][j] = "0"
- 
-            elif board[i][j] == "0":
-                board[i][j] = board[i-1][j]
-                board[i-1][j] = "0"
-
-
-def pushUp():
-                
-    for i in range(3,0,-1):
-        for j in range(4):
-            
-            #check if 2 numbers are the same, if yes, add them together
-            if board[i][j] == board[i-1][j]:
-                board[i-1][j] = str(int(board[i][j])+int(board[i-1][j]))
-                board[i][j] = "0"
-                
-            #check if the slot above is empty, if so, push up the number below
-            if board[i-1][j] == "0":
-                board[i-1][j] = board[i][j]
-                board[i][j] = "0"
-            
-    #make sure every number is correctly pushed up
-    for i in range(3):
-        for j in range(4):             
-            
-            if board[i][j] == "0" and board[i-1][j] == "0":
-                board[i][j] = board[i+1][j]
-                board[i+1][j] = "0"
-                board[i-1][j] = board[i][j]
-                board[i][j] = "0"
-                
-            elif board[i][j] == "0":
-                board[i][j] = board[i+1][j]
-                board[i+1][j] = "0"
-        
-def pushRight(): 
-                
-    #make sure every number is correctly pushed up
-    for i in range(3):
-        for j in range(4):
-            #check if 2 numbers are the same, if yes, add them together
-            if board[j][i] == board[j][i+1]:
-                board[j][i+1] = str(int(board[j][i])+int(board[j][i+1]))
-                board[j][i] = "0"
-
-            #check if the slot above is empty, if so, push up the number below
-            if board[j][i+1] == "0":
-                board[j][i+1] = board[j][i]
-                board[j][i] = "0"
-                
-
-    for i in range(2,0,-1):
-        for j in range(4):         
-
-            if board[j][i] == "0" and board[j][i+1] == "0":
-                board[j][i] = board[j][i-1]
-                board[j][i-1] = "0"
-                board[j][i+1] = board[j][i]
-                board[j][i] = "0"
-
-            elif board[j][i] == "0":
-                board[j][i] = board[j][i-1]
-                board[j][i-1] = "0"
-
-
+def pushDirection(UserInput):
+    if UserInput == "u":
+        i_list, j_list = range(3,0,-1), range(4)
+        i_direction, j_direction = -1, 0
+    elif UserInput == "d":
+        i_list, j_list = range(3), range(4)
+        i_direction, j_direction = 1, 0
+    elif UserInput == "l":
+        i_list, j_list = range(4), range(3,0,-1)
+        i_direction, j_direction = 0, -1
+    elif UserInput == "r":
+        i_list, j_list = range(4), range(3)
+        i_direction, j_direction = 0, 1
+       
+    for i in range(4): 
+        push(i_list, j_list, i_direction, j_direction)
 
 def main():
     
@@ -169,28 +82,18 @@ def main():
     print "Enter r to move all numbers to the right"
     print " "
     addNewNum() 
-
-    if not checklose(board):
-        print "Sorry, Game over"
                         
     while checklose(board):
 
         addNewNum()              
         showboard(board) 
         UserInput = raw_input("Enter u, d, l or r:")
-        if UserInput == "u":    
-            pushUp()
-        elif UserInput == "d":    
-            pushDown()
-        elif UserInput == "r":
-            pushRight()
-        elif UserInput == "l":
-            pushLeft()
+        if UserInput in "udlr":
+            pushDirection(UserInput)
         else:
-            print "invalid input, please enter u, d, l or r"
-  
+            print "Invalid input, please try again."  
+        if not checklose(board):
+            print "Sorry, Game over"
 
-
-
-  
-main()
+if __name__=='__main__':
+    main()
