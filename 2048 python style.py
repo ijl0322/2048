@@ -45,10 +45,12 @@ def pushLeft():
                 
     for i in range(3,0,-1):
         for j in range(4):
+            
             #check if 2 numbers are the same, if yes, add them together
             if board[j][i] == board[j][i-1]:
                 board[j][i-1] = str(int(board[j][i])+int(board[j][i-1]))
                 board[j][i] = "0"
+                
             #check if the slot above is empty, if so, push up the number below
             if board[j][i-1] == "0":
                 board[j][i-1] = board[j][i]
@@ -57,11 +59,13 @@ def pushLeft():
     #make sure every number is correctly pushed up
     for i in range(3):
         for j in range(4):             
+            
             if board[j][i] == "0" and board[j][i-1] == "0":
                 board[j][i] = board[j][i+1]
                 board[j][i+1] = "0"
                 board[j][i-1] = board[j][i]
                 board[j][i] = "0"
+                
             elif board[j][i] == "0":
                 board[j][i] = board[j][i+1]
                 board[j][i+1] = "0"
@@ -100,10 +104,12 @@ def pushUp():
                 
     for i in range(3,0,-1):
         for j in range(4):
+            
             #check if 2 numbers are the same, if yes, add them together
             if board[i][j] == board[i-1][j]:
                 board[i-1][j] = str(int(board[i][j])+int(board[i-1][j]))
                 board[i][j] = "0"
+                
             #check if the slot above is empty, if so, push up the number below
             if board[i-1][j] == "0":
                 board[i-1][j] = board[i][j]
@@ -112,11 +118,13 @@ def pushUp():
     #make sure every number is correctly pushed up
     for i in range(3):
         for j in range(4):             
+            
             if board[i][j] == "0" and board[i-1][j] == "0":
                 board[i][j] = board[i+1][j]
                 board[i+1][j] = "0"
                 board[i-1][j] = board[i][j]
                 board[i][j] = "0"
+                
             elif board[i][j] == "0":
                 board[i][j] = board[i+1][j]
                 board[i+1][j] = "0"
@@ -130,13 +138,13 @@ def pushRight():
             if board[j][i] == board[j][i+1]:
                 board[j][i+1] = str(int(board[j][i])+int(board[j][i+1]))
                 board[j][i] = "0"
-                #showboard(board)
+
             #check if the slot above is empty, if so, push up the number below
             if board[j][i+1] == "0":
                 board[j][i+1] = board[j][i]
                 board[j][i] = "0"
                 
-                #showboard(board)
+
     for i in range(2,0,-1):
         for j in range(4):         
 
@@ -145,11 +153,11 @@ def pushRight():
                 board[j][i-1] = "0"
                 board[j][i+1] = board[j][i]
                 board[j][i] = "0"
-                #showboard(board)
+
             elif board[j][i] == "0":
                 board[j][i] = board[j][i-1]
                 board[j][i-1] = "0"
-                #showboard(board)
+
 
 
 def main():
@@ -178,7 +186,8 @@ def main():
             pushRight()
         elif UserInput == "l":
             pushLeft()
-
+        else:
+            print "invalid input, please enter u, d, l or r"
   
 
 
