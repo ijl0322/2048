@@ -52,20 +52,29 @@ def checkwin(board):
     return flag
                 
 def push(i_list, j_list, i_direction, j_direction):
+    move = 0
     for i in i_list:
         for j in j_list:
                 
         #check if 2 numbers are the same, if yes, add them together
             if board[i][j] == board[i + i_direction][j + j_direction]:
                 board[i+ i_direction][j + j_direction] = str(int(board[i][j])+int(board[i+ i_direction][j+j_direction]))
+                if board[i][j] != "0":
+                    move += 1
                 board[i][j] = "0"
-                        
+            
+                   
             #check if the slot above is empty, if so, push up the number below
             if board[i + i_direction][j + j_direction] == "0":
                 board[i + i_direction][j + j_direction] = board[i][j]
+                if board[i][j] != "0":
+                    move += 1
                 board[i][j] = "0"
 
+    return move
+
 def pushDirection(UserInput):
+    move = 0
     if UserInput == "u":
         i_list, j_list = range(1,4), range(4)
         i_direction, j_direction = -1, 0
@@ -80,7 +89,8 @@ def pushDirection(UserInput):
         i_direction, j_direction = 0, 1
        
     for i in range(4): 
-        push(i_list, j_list, i_direction, j_direction)
+        move += push(i_list, j_list, i_direction, j_direction)
+    return move
 
 def main():
     
@@ -91,15 +101,17 @@ def main():
     print "Enter r to move all numbers to the right"
     print " "
     addNewNum() 
-                        
+    addNewNum()                          
     while checklose(board):
-
-        addNewNum()              
+        
+          
         showboard(board) 
         UserInput = raw_input("Enter u, d, l or r:")
         print "\n"
         if UserInput in "udlr":
-            pushDirection(UserInput)
+            move = pushDirection(UserInput) 
+            if move != 0:
+                addNewNum()                   
         else:
             print "Invalid input, please try again."  
         
