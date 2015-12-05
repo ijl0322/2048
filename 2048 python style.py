@@ -40,7 +40,9 @@ def checklose(board):
         for num in line:
             if num != "0":
                 totalNum += 1
-    return totalNum < 16 
+    
+    return totalNum < 16                
+               
     
 def checkwin(board):
     flag = False
@@ -51,7 +53,7 @@ def checkwin(board):
                 flag = True
     return flag
                 
-def push(i_list, j_list, i_direction, j_direction):
+def add(i_list, j_list, i_direction, j_direction):
     move = 0
     for i in i_list:
         for j in j_list:
@@ -62,16 +64,19 @@ def push(i_list, j_list, i_direction, j_direction):
                 if board[i][j] != "0":
                     move += 1
                 board[i][j] = "0"
-            
-                   
-            #check if the slot above is empty, if so, push up the number below
+
+    return move
+    
+def push(i_list, j_list, i_direction, j_direction):
+    move = 0
+    for i in i_list:
+        for j in j_list:
             if board[i + i_direction][j + j_direction] == "0":
                 board[i + i_direction][j + j_direction] = board[i][j]
                 if board[i][j] != "0":
                     move += 1
                 board[i][j] = "0"
-
-    return move
+    return move                
 
 def pushDirection(UserInput):
     move = 0
@@ -88,8 +93,14 @@ def pushDirection(UserInput):
         i_list, j_list = range(4), range(2,-1,-1)
         i_direction, j_direction = 0, 1
        
-    for i in range(4): 
+    #for i in range(4): 
+
+    for i in range(4):
         move += push(i_list, j_list, i_direction, j_direction)
+    move += add(i_list, j_list, i_direction, j_direction)
+    for i in range(4):
+        move += push(i_list, j_list, i_direction, j_direction)
+    
     return move
 
 def main():
@@ -101,11 +112,16 @@ def main():
     print "Enter r to move all numbers to the right"
     print " "
     addNewNum() 
-    addNewNum()                          
+    addNewNum()     
+    showboard(board)                      
     while checklose(board):
-        
-          
-        showboard(board) 
+                                         
+        if checkwin(board):
+            print "You win"
+            break
+        elif not checklose(board):
+            print "Sorry, Game over"
+            
         UserInput = raw_input("Enter u, d, l or r:")
         print "\n"
         if UserInput in "udlr":
@@ -115,11 +131,26 @@ def main():
         else:
             print "Invalid input, please try again."  
         
-        if checkwin(board):
-            break
-        elif not checklose(board):
-            print "Sorry, Game over"
+        showboard(board) 
         
+#debugging code
+"""
+board[0][1] = "4"
+board[0][2] = "2"
+board[0][3] = "16" 
+board[1][0] = "4"
+board[1][1] = "8"
+board[1][2] = "4"
+board[1][3] = "32"     
+board[2][0] = "2"        
+board[2][1] = "4"
+board[2][2] = "16"
+board[2][3] = "128"
+board[3][0] = "4"
+board[3][1] = "2"
+board[3][2] = "8"
+board[3][3] = "256"   
+"""
 
 if __name__=='__main__':
     main()
