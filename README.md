@@ -16,26 +16,28 @@ When moving the numbers to the right, all numbers will be pushed to the right of
 
 For instance:
 
-4 - 2 -
+ 4 - 2 -
 
 will become:
 
-- - 4 2
+ - - 4 2
 
 If two numbers are of the same value, they will be added together. 
 
 For instance:
 
-- - 4 4
+ - - 4 4
 
 will become:
 
-- - - 8
+ - - - 8
+
+The same idea applies to the up, down, and left movements. 
 
 The games prints out the board every time the player makes a move. 
 
 If the player gets the number "2048" on the board, he/she wins.
 
-And the player looses if he/she cannot make any move at all. 
+The player looses if he/she cannot make any move at all. 
 
 
