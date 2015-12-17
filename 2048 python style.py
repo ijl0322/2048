@@ -1,9 +1,42 @@
 import random
+
+
 #initialize board
-
-board = [["0"]*4,["0"]*4,["0"]*4,["0"]*4]
-
+def init_board():
+    board = []
+    for i in range(4):
+        board += [["0"] * 4]
+        
+    # Init with two numbers.
+    addNewNum(board, 2)  
     
+    #debugging code
+    """
+    board[0][0] = "2"
+    board[0][1] = "4"
+    board[0][2] = "2"
+    board[0][3] = "16"
+    board[1][0] = "0"
+    board[1][1] = "8"
+    board[1][2] = "16"
+    board[1][3] = "32" 
+    board[2][0] = "4"   
+    board[2][1] = "2"
+    board[2][2] = "32"
+    board[2][3] = "64"
+    board[3][0] = "8"
+    board[3][1] = "4"
+    board[3][2] = "2"
+    board[3][3] = "256"   
+    """
+        
+    return board    
+ 
+             
+
+def printthe():
+    print "hi"                
+                                                
 def showboard(board):
     """ Takes in a list (board), and prints out the board """
     for line in board:
@@ -20,44 +53,34 @@ def showboard(board):
                 print "    ", item,
         print "\n\n"
 
-def addNewNum():
+def addNewNum(board, n):
+    
     """Generates a 2 or 4, and set the number at a random location on board \
     that is originally a 0 """
     
-    newNum = str(random.choice([2,4]))
-    randomx = random.randrange(4)
-    randomy = random.randrange(4)
-    while board[randomy][randomx] != "0":
+    for i in range(n):
+        newNum = str(random.choice([2,4]))
         randomx = random.randrange(4)
         randomy = random.randrange(4)
-    board[randomy][randomx] = newNum 
+        while board[randomy][randomx] != "0":
+            randomx = random.randrange(4)
+            randomy = random.randrange(4)
+        board[randomy][randomx] = newNum 
         
-def checklose(board):
-    """Takes in a list (board), return True the player does not lose (if there is still 0 in the list or \
-    if any move can still be made) otherwise False"""
-    totalNum = 0
-    for line in board:
-        for num in line:
-            if num != "0":
-                totalNum += 1
-    if totalNum == 16:
-        return pushDirection("u") + pushDirection("d") + pushDirection("l") + pushDirection("r") != 0
-    return True            
-               
     
 def checkwin(board):
     """ Checks if the player has the number 2048 on the board. 
     If so, return True and print a "you win" statement. Otherwise, return False."""
     
-    flag = False
+    win = False
     for line in board:
         for num in line:
             if num == "2048":
                 print "Congratulations! You win!!!!" 
-                flag = True
-    return flag
+                win = True
+    return win
                 
-def add(i_list, j_list, i_direction, j_direction):
+def add(board, i_list, j_list, i_direction, j_direction):
     
     """Iterates through the board, and adds a number with its adjacent neighbor if the two numbers are the same. 
     ex. 2248 becomes 0448.
@@ -80,7 +103,7 @@ def add(i_list, j_list, i_direction, j_direction):
 
     return move
     
-def push(i_list, j_list, i_direction, j_direction):
+def push(board, i_list, j_list, i_direction, j_direction):
     
     """push a number to its adjacent slot if the slot is 0. 
     i_list, j_list - lists, indicate how push interate through the list.
@@ -98,7 +121,7 @@ def push(i_list, j_list, i_direction, j_direction):
                 board[i][j] = "0"
     return move                
 
-def pushDirection(UserInput):
+def pushDirection(board, UserInput):
     """
     Takes in a UserInput and calls add and push function with the proper i_list,\
     j_list, i_direction and j_direction. 
@@ -120,13 +143,61 @@ def pushDirection(UserInput):
         i_direction, j_direction = 0, 1
        
     for i in range(4):
-        move += push(i_list, j_list, i_direction, j_direction)
-    move += add(i_list, j_list, i_direction, j_direction)
+        move += push(board, i_list, j_list, i_direction, j_direction)
+    move += add(board, i_list, j_list, i_direction, j_direction)
     for i in range(4):
-        move += push(i_list, j_list, i_direction, j_direction)
+        move += push(board, i_list, j_list, i_direction, j_direction)
     
     return move
 
+
+
+def checkCell(board, i, j):
+    move_i = []
+    move_j = []
+    board_size = len(board)
+    if i > 0:
+        move_i.append(-1)
+        move_j.append(0)
+    if i < (board_size - 1):
+        move_i.append(1)
+        move_j.append(0)
+    if j > 0:
+        move_j.append(-1)
+        move_i.append(0)
+    if j < (board_size - 1):
+        move_j.append(1)
+        move_i.append(0)
+    for k in range(len(move_i)):
+        if board[i + move_i[k]][j + move_j[k]] == board[i][j]:
+            return True
+    return False
+
+def canMove(board):
+
+    board_size = len(board)
+    for i in range(board_size):
+        for j in range(board_size):
+            if board[i][j] == 0:
+                return True
+            if checkCell(board, i, j):
+                return True
+    return False
+
+def checklose(board):
+    
+    """Takes in a list (board), return True the player does not lose (if there is still 0 in the list or \
+    if any move can still be made) otherwise False"""
+    nozero = False
+    
+    for elt in board:
+        nozero = nozero or ("0" in elt)
+
+    if not nozero:
+        return not canMove(board)
+    return False      
+        
+    
 def main():
     
     print "Hi, welcome to 2048 game!"
@@ -135,52 +206,32 @@ def main():
     print "Enter l to move all numbers tp the left"
     print "Enter r to move all numbers to the right"
     print " "
-    addNewNum() 
-    addNewNum()     
+    
+    board = init_board()    
     showboard(board)   
                                             
-    while checklose(board):
+    while not checklose(board) and not checkwin(board):
         
         if checkwin(board):
             break
                                                      
         UserInput = raw_input("Enter u, d, l or r:")
         print "\n"
-        try:
-            if UserInput in "udlr":
-                move = pushDirection(UserInput) 
-                if move != 0:
-                    addNewNum()                   
-            else:
-                print "Invalid input, please try again."  
-        except:
-            print "Invalid input, please try again."
-            continue
+
+        while not (UserInput in "udlr" and len(UserInput) == 1):  
+            print "Invalid input, please try again."               
+            UserInput = raw_input("Enter u, d, l or r:")
+            
+        move = pushDirection(board, UserInput) 
+        if move != 0:
+            addNewNum(board, 1)                   
         
         showboard(board) 
         
-    if not checklose(board):
-        print "Sorry, Game over"
+        if checklose(board):
+            print "Sorry, Game over"
 
-#debugging code
-
-"""
-board[0][1] = "4"
-board[0][2] = "2"
-board[0][3] = "16" 
-board[1][0] = "4"
-board[1][1] = "8"
-board[1][2] = "4"
-board[1][3] = "32"     
-board[2][0] = "2"        
-board[2][1] = "4"
-board[2][2] = "16"
-board[2][3] = "128"
-board[3][0] = "4"
-board[3][1] = "2"
-board[3][2] = "1024"
-board[3][3] = "1024"   
-"""
-
+    showboard(board)
+    
 if __name__=='__main__':
     main()
