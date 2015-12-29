@@ -5,7 +5,7 @@ import random
 def init_board():
     board = []
     for i in range(4):
-        board += [["0"] * 4]
+        board += [[0] * 4]
         
     # Init with two numbers.
     addNewNum(board, 2)  
@@ -33,21 +33,18 @@ def init_board():
     return board    
  
              
-
-def printthe():
-    print "hi"                
-                                                
+                                                           
 def showboard(board):
     """ Takes in a list (board), and prints out the board """
     for line in board:
         for item in line:
-            if item == "0":
+            if item == 0:
                 print "     -",
-            elif int(item)/1000 > 0:
+            elif item/1000 > 0:
                 print " ", item,
-            elif int(item)/100 > 0:
+            elif item/100 > 0:
                 print "  ", item,
-            elif int(item)/10 > 0:
+            elif item/10 > 0:
                 print "   ", item,
             else:
                 print "    ", item,
@@ -59,10 +56,10 @@ def addNewNum(board, n):
     that is originally a 0 """
     
     for i in range(n):
-        newNum = str(random.choice([2,4]))
+        newNum = random.choice([2,4])
         randomx = random.randrange(4)
         randomy = random.randrange(4)
-        while board[randomy][randomx] != "0":
+        while board[randomy][randomx] != 0:
             randomx = random.randrange(4)
             randomy = random.randrange(4)
         board[randomy][randomx] = newNum 
@@ -75,7 +72,7 @@ def checkwin(board):
     win = False
     for line in board:
         for num in line:
-            if num == "2048":
+            if num == 2048:
                 print "Congratulations! You win!!!!" 
                 win = True
     return win
@@ -96,10 +93,10 @@ def add(board, i_list, j_list, i_direction, j_direction):
                 
         #check if 2 numbers are the same, if yes, add them together
             if board[i][j] == board[i + i_direction][j + j_direction]:
-                board[i+ i_direction][j + j_direction] = str(int(board[i][j])+int(board[i+ i_direction][j+j_direction]))
-                if board[i][j] != "0":
+                board[i+ i_direction][j + j_direction] = board[i][j]+board[i+ i_direction][j+j_direction]
+                if board[i][j] != 0:
                     move += 1
-                board[i][j] = "0"
+                board[i][j] = 0
 
     return move
     
@@ -114,11 +111,11 @@ def push(board, i_list, j_list, i_direction, j_direction):
     move = 0
     for i in i_list:
         for j in j_list:
-            if board[i + i_direction][j + j_direction] == "0":
+            if board[i + i_direction][j + j_direction] == 0:
                 board[i + i_direction][j + j_direction] = board[i][j]
-                if board[i][j] != "0":
+                if board[i][j] != 0:
                     move += 1
-                board[i][j] = "0"
+                board[i][j] = 0
     return move                
 
 def pushDirection(board, UserInput):
@@ -191,7 +188,7 @@ def checklose(board):
     nozero = False
     
     for elt in board:
-        nozero = nozero or ("0" in elt)
+        nozero = nozero or (0 in elt)
 
     if not nozero:
         return not canMove(board)
